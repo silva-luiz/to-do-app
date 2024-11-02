@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora IMC</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <br>
+        <br>
+        <br>
+        <center>
+            <form>
+                Peso:
+                <input id="peso" type="number" step="0.01" name="peso" required/>
+                <br>
+                <br>
+                Altura:
+                <input id="altura" type="number" step="0.01" name="altura" required/>
+                <br>
+                <br>
+                <input id="botao" type="button" value="Calcular"/>
+            </form>
+            <h3><div id="resultado"></div></h3>
+            <h5><div id="resultado2"></div></h5>
+        </center>
+</body>
+<script>
+    $( document ).ready(function() {
+
+        $("#botao").click(function() {
+            var v1 = $("#peso").val();
+            var v2 = $("#altura").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '../backend/calculadora-imc-ajax.php',
+                data: {
+                    peso: v1,
+                    altura: v2
+                }
+            }).done(function(resposta) {
+                $("#resultado").html(resposta.resultado);
+                $("#resultado2").html(resposta.diagnostico);
+            });
+
+            /* Fazendo a requisição AJAX utilizando javascript nativo
+            var req = new XMLHttpRequest();
+            req.responseType = 'json';
+            req.open('POST', '../backend/calculadora-imc-ajax.php', true);
+            req.onload = function() {
+                var jsonResponse = req.response;
+                document.getElementById("resultado").innerText = jsonResponse.resultado;
+                document.getElementById("resultado2").innerText = jsonResponse.diagnostico;
+            };
+
+            var formData = new FormData();
+            formData.append("peso", v1);
+            formData.append("altura", v2);
+            req.send(formData);
+            */
+        });
+
+    });
+</script>
+</html>
