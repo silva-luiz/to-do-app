@@ -50,8 +50,8 @@
         echo "<td>" . $linha->description . "</td>";
         echo "<td>" . $linha->status . "</td>";
         echo "<td>" . $linha->endDate . "</td>";
-        echo "<td> <a href='alterar_formulario.php?codigo=" . $linha->id . "'>Finalizar</a></td>";
-        echo "<td> <a href='remover_processamento.php?codigo=" . $linha->id . "'>Remover</a></td>";
+        echo "<td> <a href='alterar_formulario.php?id=" . $linha->id . "'>Editar atividade</a></td>";
+        echo "<td> <a href='remover_processamento.php?id=" . $linha->id . "'>Remover atividade</a></td>";
 
         echo "</tr>";
     }

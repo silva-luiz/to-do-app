@@ -25,9 +25,9 @@
         return $statement->execute();
     }
 
-    function atualizaRegistro($conexao, $codigo, $title, $description, $status, $endDate)
+    function atualizaRegistro($conexao, $id, $title, $description, $status, $endDate)
     {
-        $SQL = "UPDATE activity SET title = :title, description = :description, status = :status, endDate = :endDate WHERE codigo = :codigo";
+        $SQL = "UPDATE activity SET title = :title, description = :description, status = :status, endDate = :endDate WHERE id = :id";
         $statement = $conexao->prepare($SQL);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':description', $description);
@@ -36,11 +36,11 @@
         return $statement->execute();
     }
 
-    function removeRegistro($conexao, $codigo)
+    function removeRegistro($conexao, $id)
     {
-        $SQL = "DELETE FROM activity WHERE codigo = :codigo";
+        $SQL = "DELETE FROM activity WHERE id = :id";
         $statement = $conexao->prepare($SQL);
-        $statement->bindValue(':codigo', $codigo);
+        $statement->bindValue(':id', $id);
         return $statement->execute();
     }
 

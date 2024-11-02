@@ -13,14 +13,15 @@
     <?php
 
     $id = trim($_POST['id']);
+    $title = trim($_POST['title']);
     $description = trim($_POST['description']);
 
 
     // Dados mockados
     // $id = "14";
     
-    if (($id == "") || ($description == "")) {
-        echo "Há registros em branco!";
+    if (($id == null) || ($title == "") || ($description == "")) {
+        echo "Há registros em branco ou ID não foi fornecido!";
         return;
     }
 
@@ -32,8 +33,9 @@
         "SET title = :title, description = :description" .
         " WHERE id = :id ";
 
-    $statement = $conexao->prepare($SQL);
+    $statement = $conexao->prepare(query: $SQL);
     $statement->bindParam(':id', $id);
+    $statement->bindParam(':title', $title);
     $statement->bindParam(':description', $description);
 
     if ($statement->execute()) {
