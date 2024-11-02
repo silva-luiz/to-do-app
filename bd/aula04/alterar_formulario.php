@@ -2,30 +2,30 @@
 <html>
 
 <head>
-    <title>CRUD</title>
+    <title>TO-DO APP</title>
 </head>
 
 <body>
 
     <?php
-    $codigo = $_GET['codigo'];
+    $id = $_GET['id'];
 
     //Incluindo o arquivo de conexão no banco de dados
     require_once("database.php");
 
     //Definindo a query
-    $SQL = "SELECT * FROM produtos WHERE codigo = $codigo";
+    $SQL = "SELECT * FROM activity WHERE id = $id";
+
 
     //Guarda a busca no array $resultado
     $resultado = $conexao->query($SQL);
-    
+
     //Percorrendo todos os registros
     while ($linha = $resultado->fetch(PDO::FETCH_OBJ)) {
-        $codigo = $linha->codigo;
-        $descricao = $linha->descricao;
-        $modelo = $linha->modelo;
-        $quantidade = $linha->quantidade;
-        $valor = $linha->valor;
+        $id = $linha->id;
+        $title = $linha->title;
+        $description = $linha->description;
+        $status = $linha->status;
     }
 
     ?>
@@ -35,26 +35,11 @@
 
     <form method="POST" action="alterar_processamento.php">
 
-        <!-- Código: -->
-        <input type="hidden" id="codigo" name="codigo" value="<?php echo $codigo; ?>" />
+        Nome da tarefa:<br />
+        <input type="text" id="title" name="title" size="50" value="<?php echo $title; ?>" />
 
         Descrição:<br />
-        <input type="text" id="descricao" name="descricao" size="50" value="<?php echo $descricao; ?>" />
-
-        <br /><br />
-
-        Modelo:<br />
-        <input type="text" id="modelo" name="modelo" size="50" value="<?php echo $modelo; ?>" />
-
-        <br /><br />
-
-        Quantidade:<br />
-        <input type="text" id="quantidade" name="quantidade" size="20" value="<?php echo $quantidade; ?>"/>
-
-        <br /><br />
-
-        Valor:<br />
-        <input type="text" id="valor" name="valor" size="20" value="<?php echo $valor; ?>"/>
+        <input type="text" id="description" name="description" size="50" value="<?php echo $description; ?>" />
 
         <br /><br />
 

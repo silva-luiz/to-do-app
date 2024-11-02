@@ -32,7 +32,7 @@
     require_once("database.php");
 
     //Definindo a query
-	$SQL = "INSERT INTO produtos " .
+	$SQL = "INSERT INTO activity " .
     "(descricao, modelo, quantidade, valor)" .
     " VALUES " .
     "(:descricao, :modelo, :quantidade, :valor)";

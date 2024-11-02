@@ -26,7 +26,7 @@
     require_once("database.php");
 
     //Definindo a query
-	$SQL = "DELETE FROM produtos " .
+	$SQL = "DELETE FROM activity " .
     " WHERE codigo = :codigo ";
 
 	$statement = $conexao->prepare($SQL);

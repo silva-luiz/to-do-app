@@ -12,16 +12,14 @@
 
     <?php
 
-    $codigo = trim($_POST['codigo']);
-    $descricao = trim($_POST['descricao']);
-    $modelo = trim($_POST['modelo']);
-    $quantidade = trim($_POST['quantidade']);
-    $valor = trim($_POST['valor']);
+    $id = trim($_POST['id']);
+    $description = trim($_POST['description']);
+
 
     // Dados mockados
-    // $codigo = "14";
-
-    if (($codigo == "") || ($descricao == "") || ($modelo == "") || ($quantidade == "")|| ($valor == "")) {
+    // $id = "14";
+    
+    if (($id == "") || ($description == "")) {
         echo "Há registros em branco!";
         return;
     }
@@ -30,20 +28,17 @@
     require_once("database.php");
 
     //Definindo a query
-	$SQL = "UPDATE produtos " .
-    "SET descricao = :descricao, modelo = :modelo, quantidade = :quantidade, valor = :valor" .
-    " WHERE codigo = :codigo ";
+    $SQL = "UPDATE activity " .
+        "SET title = :title, description = :description" .
+        " WHERE id = :id ";
 
-	$statement = $conexao->prepare($SQL);
-	$statement->bindParam(':codigo', $codigo);
-	$statement->bindParam(':descricao', $descricao);
-	$statement->bindParam(':modelo', $modelo);
-	$statement->bindParam(':quantidade', $quantidade);
-	$statement->bindParam(':valor', $valor);
-	if ($statement->execute()){
+    $statement = $conexao->prepare($SQL);
+    $statement->bindParam(':id', $id);
+    $statement->bindParam(':description', $description);
+
+    if ($statement->execute()) {
         echo "Registro alterado com sucesso";
-    }
-    else{
+    } else {
         echo "Falha ao alterar o registro";
     }
 

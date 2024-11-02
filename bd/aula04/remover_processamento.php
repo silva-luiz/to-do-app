@@ -12,12 +12,12 @@
 
     <?php
 
-    $codigo = trim($_GET['codigo']);
+    $id = trim($_GET['id']);
 
     // Dados mockados
-    // $codigo = "14";
-
-    if ($codigo == "") {
+    // $id = "14";
+    
+    if ($id == "") {
         echo "Código não encontrado!";
         return;
     }
@@ -26,15 +26,14 @@
     require_once("database.php");
 
     //Definindo a query
-	$SQL = "DELETE FROM produtos " .
-    " WHERE codigo = :codigo ";
+    $SQL = "DELETE FROM activity " .
+        " WHERE id = :id ";
 
-	$statement = $conexao->prepare($SQL);
-	$statement->bindParam(':codigo', $codigo);
-	if ($statement->execute()){
+    $statement = $conexao->prepare($SQL);
+    $statement->bindParam(':id', $id);
+    if ($statement->execute()) {
         echo "Registro removido com sucesso";
-    }
-    else{
+    } else {
         echo "Falha ao remover o registro";
     }
 

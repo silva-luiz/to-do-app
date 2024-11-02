@@ -16,7 +16,7 @@
     require_once("database.php");
 
     //Definindo a query
-    $SQL = "SELECT * FROM produtos";
+    $SQL = "SELECT * FROM activity";
 
     //Guarda a busca no array $resultado
     $resultado = $conexao->query($SQL);

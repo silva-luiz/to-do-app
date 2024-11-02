@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>CRUD</title>
+    <title>TO-DO APP</title>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     require_once("database.php");
 
     //Definindo a query
-    $SQL = "SELECT * FROM produtos";
+    $SQL = "SELECT * FROM activity";
 
     //Guarda a busca no array $resultado
     $resultado = $conexao->query($SQL);
@@ -26,17 +26,17 @@
 
     if ($quantidade == 0) {
         echo "Não há registros a serem exibidos";
+        echo " <a href='novo_formulario.php'>Adicionar atividade</a>";
         return;
     }
 
     echo "<table border = 1>";
     echo "	<tr>";
-    echo "		<td>Código</td>";
+    echo "		<td>ID</td>";
+    echo "		<td>Nome da Tarefa</td>";
     echo "		<td>Descrição</td>";
-    echo "		<td>Modelo</td>";
-    echo "		<td>Quantidade</td>";
-    echo "		<td>Valor</td>";
-    echo "		<td>Total</td>";
+    echo "		<td>Status</td>";
+    echo "		<td>Data de conclusão</td>";
     echo "		<td>Alterar</td>";
     echo "		<td>Remover</td>";
     echo "	</tr>";
@@ -45,14 +45,13 @@
     while ($linha = $resultado->fetch(PDO::FETCH_OBJ)) {
         echo "<tr>";
         //Imprime o elemento do array utilizando como chave o nome da coluna
-        echo "<td>" . $linha->codigo . "</td>";
-        echo "<td>" . $linha->descricao . "</td>";
-        echo "<td>" . $linha->modelo . "</td>";
-        echo "<td>" . $linha->quantidade . "</td>";
-        echo "<td>" . number_format($linha->valor, 2) . "</td>";
-        echo "<td>" . number_format($linha->quantidade * $linha->valor, 2) . "</td>";
-        echo "<td> <a href='alterar_formulario.php?codigo=" . $linha->codigo . "'>Link</a></td>";
-        echo "<td> <a href='remover_processamento.php?codigo=" . $linha->codigo . "'>Link</a></td>";
+        echo "<td>" . $linha->id . "</td>";
+        echo "<td>" . $linha->title . "</td>";
+        echo "<td>" . $linha->description . "</td>";
+        echo "<td>" . $linha->status . "</td>";
+        echo "<td>" . $linha->endDate . "</td>";
+        echo "<td> <a href='alterar_formulario.php?codigo=" . $linha->id . "'>Finalizar</a></td>";
+        echo "<td> <a href='remover_processamento.php?codigo=" . $linha->id . "'>Remover</a></td>";
 
         echo "</tr>";
     }
@@ -65,7 +64,7 @@
     ?>
 
     <br />
-    <a href="novo_formulario.php">Novo registro</a>
+    <a href="novo_formulario.php">Adicionar atividade</a>
 
 </body>
 
