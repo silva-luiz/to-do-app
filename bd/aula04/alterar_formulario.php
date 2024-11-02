@@ -34,10 +34,11 @@
         como se conectar em um banco de dados e alterar um registro</p>
 
     <form method="POST" action="alterar_processamento.php">
-
+        <input type="hidden" name="id" value="<?php echo $id; ?>" />
         Nome da tarefa:<br />
         <input type="text" id="title" name="title" size="50" value="<?php echo $title; ?>" />
 
+        <br />
         Descrição:<br />
         <input type="text" id="description" name="description" size="50" value="<?php echo $description; ?>" />
 

@@ -76,7 +76,7 @@
                                     <span class="input-group-text" id="inputGroup-sizing-default">Data de
                                         conclusão</span>
                                 </div>
-                                <input id="enddate" name="enddate" type="text" class="form-control"
+                                <input id="enddate" name="enddate" type="date" class="form-control"
                                     aria-label="Descrição" aria-describedby="inputGroup-sizing-default" required>
                             </div>
 
@@ -102,6 +102,7 @@
                 var _title = $("#title").val();
                 var _description = $("#description").val();
                 var _endDate = $("#enddate").val();
+                var _status = false;
 
                 $.ajax({
                     method: "POST",
@@ -110,6 +111,7 @@
                         title: _title,
                         description: _description,
                         endDate: _endDate,
+                        status: _status,
                     }
                 }).done(
                     function () {

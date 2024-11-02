@@ -13,6 +13,7 @@
     <?php
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
+    $endDate = trim($_POST['endDate']);
 
 
     // Dados mockados
@@ -31,13 +32,14 @@
 
     //Definindo a query
     $SQL = "INSERT INTO activity " .
-        "(title, description)" .
+        "(title, description, endDate)" .
         " VALUES " .
-        "(:title, :description)";
+        "(:title, :description, :endDate)";
 
     $statement = $conexao->prepare($SQL);
     $statement->bindParam(':title', $title);
     $statement->bindParam(':description', $description);
+    $statement->bindParam(':endDate', $endDate);
     if ($statement->execute()) {
         $status = "Registro inserido com sucesso";
     } else {
