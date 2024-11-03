@@ -13,6 +13,33 @@
     <h1>To-Do App</h1>
     <p class="mb-4">Gerencie suas tarefas.</p>
 
+    <div class="modal fade" id="modalParticipantes" tabindex="-1" aria-labelledby="modalParticipantesLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalParticipantesLabel">Participantes do Projeto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Carolina Medella</li>
+                        <li class="list-group-item">Gabriela Gasch</li>
+                        <li class="list-group-item">Jackson Santos</li>
+                        <li class="list-group-item">Luiz Henrique Gomes</li>
+                        <li class="list-group-item">Nicolas Duque</li>
+                        <li class="list-group-item">Rafael Bazolli</li>
+                    </ul>
+                </div>
+                <div class="modal-footer justify-content-center bg-secondary">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <?php
 
     // Incluindo o arquivo de conexão no banco de dados
@@ -50,8 +77,14 @@
 
     // Percorrendo todos os registros
     while ($linha = $resultado->fetch(PDO::FETCH_OBJ)) {
-        // Verifica se a tarefa está concluída e aplica a classe 'table-success' se for o caso
+        // Verifica se a tarefa está concluída
         $classe = ($linha->status == 1) ? "table-success" : "";
+
+        // Verifica se a data de conclusão foi ultrapassada e a tarefa não está concluída
+        $dataAtual = date('Y-m-d');
+        if ($linha->status == 0 && $linha->endDate < $dataAtual) {
+            $classe = "table-danger";
+        }
 
         echo "<tr class='$classe'>";
         // Imprime o elemento do array utilizando como chave o nome da coluna
@@ -69,13 +102,23 @@
     echo "	</tbody>";
     echo "</table>";
 
+
     // Fechando a conexão com o banco de dados
     unset($conexao);
     ?>
 
     <br />
-    <a href="novo_formulario.php" class="btn btn-primary">Adicionar tarefa</a>
+    <div class="d-flex justify-content-between">
+        <a href="novo_formulario.php" class="btn btn-primary">Adicionar tarefa</a>
 
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalParticipantes">
+            Créditos
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
