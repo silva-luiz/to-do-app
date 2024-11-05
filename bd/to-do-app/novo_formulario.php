@@ -61,6 +61,16 @@
             var _endDate = $("#enddate").val();
             var _status = false;
 
+            var dataMinima = new Date('2000-01-01');
+            var dataMaxima = new Date();
+
+            var dataSelecionada = new Date(_endDate);
+
+            if (dataSelecionada < dataMinima || dataSelecionada > dataMaxima) {
+                alert('A data deve estar entre 01/01/2000 e a data atual.');
+                return;
+            }
+
             $.ajax({
                 method: "POST",
                 url: "novo_processamento.php",

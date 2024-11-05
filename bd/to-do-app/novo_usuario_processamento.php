@@ -1,5 +1,5 @@
 <?php
-session_start(); // Inicie a sessão
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name']);
@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    require_once("database.php"); // Ajuste o caminho conforme necessário
+    require_once("database.php");
     require_once("jwt.php");
 
     // Hash da senha
@@ -19,11 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $id = $row['id'] + 1;
 
-    // Prepara a consulta para inserir o novo usuário
     $SQL = "INSERT INTO user (id, name, lastName, birthDate, username, password) VALUES (:id, :name, :lastName, :birthDate, :username, :password)";
     $stmt = $conexao->prepare($SQL);
     
-    // Vincula os parâmetros
+
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':lastName', $lastName);
@@ -35,12 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $token = gerarJWT($id, $username);
         setcookie('jwt', $token, time() + 3600, "/");
 
-        $status = "Usuário cadastrado com sucesso!";
+        echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
     } else {
-        $status = "Falha ao cadastrar usuário.";
+        echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar o usuário.']);
     }
 
-    // Redireciona de volta para a página de cadastro
     header("Location: criar_usuario.php"); 
     exit();
 

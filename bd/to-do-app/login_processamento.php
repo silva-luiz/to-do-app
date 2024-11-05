@@ -14,19 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':username', $username);
     $stmt->execute();
 
-    
-
-    // Verifica se o usuário foi encontrado
     if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
         if (password_verify($password, $row['password'])) {
-            // Gerar token JWT após login
             
             $token = gerarJWT($row['id'], $username);
             
 
-            setcookie('jwt', $token, time() + 3600, "/"); // Define o cookie para 1 hora
-            header("Location: index.php"); // Redireciona para a página principal após o login
+            setcookie('jwt', $token, time() + 3600, "/"); 
+            header("Location: index.php"); 
             exit();
         } else {
             $erro = "Nome de usuário ou senha incorretos.";

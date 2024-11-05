@@ -2,10 +2,10 @@
 session_start();
 
 if (isset($_COOKIE['jwt'])) {
-    setcookie('jwt', '', time() - 3600, "/"); // Remove o cookie definindo um tempo de expiração no passado
+    setcookie('jwt', '', time() - 3600, "/");
 }
 
-$erro = ""; // Inicializa a variável de erro
+$erro = ""; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -19,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':username', $username);
     $stmt->execute();
 
-    // Verifica se o usuário foi encontrado
+
     if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
         if (password_verify($password, $row['password'])) {
-            // Gerar token JWT após login
+            // Gerar token 
             $token = gerarJWT($row['id'], $username);
-            setcookie('jwt', $token, time() + 3600, "/"); // Define o cookie para 1 hora
-            header("Location: index.php"); // Redireciona para a página principal após o login
+            setcookie('jwt', $token, time() + 3600, "/");
+            header("Location: index.php"); 
             
             exit();
         } else {
@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    
 </head>
 <body class="bg-light">
     <div class="container mt-5">

@@ -55,9 +55,9 @@
                             </div>
 
                             <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-primary col-5">Salvar</button>
-        <button type="reset" class="btn btn-secondary col-5">Limpar</button>
-    </div>
+                            <button type="submit" class="btn btn-primary col-5">Salvar</button>
+                            <button type="reset" class="btn btn-secondary col-5">Limpar</button>
+                            </div>
                         </form>
                     </div>
                 </div>

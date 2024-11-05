@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -19,13 +20,9 @@
                         <h4>Cadastrar Usuário</h4>
                     </div>
                     <div class="card-body">
-                        <?php
-                        session_start();
-                        if (isset($_SESSION['status'])) {
-                            echo '<div class="alert alert-success mt-3" role="alert">' . htmlspecialchars($_SESSION['status']) . '</div>';
-                            unset($_SESSION['status']);
-                        }
-                        ?>
+
+                        <div id="status-message"></div>
+
 
                         <form method="POST" action="novo_usuario_processamento.php">
                             <div class="form-group">
@@ -60,6 +57,43 @@
             </div>
         </div>
     </div>
+
+    <script>
+$(document).ready(function() {
+    // Quando o formulário for enviado
+    $("#create-user-form").submit(function(e) {
+        e.preventDefault();  // Impede o envio padrão do formulário
+
+        // Coletando os dados do formulário
+        var formData = $(this).serialize();
+
+        // Requisição AJAX
+        $.ajax({
+            url: 'novo_usuario_processamento.php',  // Arquivo PHP que processará o cadastro
+            type: 'POST',  // Método POST
+            data: formData,  // Dados do formulário
+            dataType: 'json',  // Esperamos uma resposta JSON
+            success: function(response) {
+                // Exibe a mensagem de sucesso com o status 'success'
+                if (response.success) {
+                    $('#status-message').html('<div class="alert alert-success mt-3" role="alert">' + response.message + '</div>');
+                    // Limpa o formulário
+                    $("#create-user-form")[0].reset();
+                } else {
+                    // Exibe a mensagem de erro
+                    $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">' + response.message + '</div>');
+                }
+            },
+            error: function() {
+                // Se houver erro na requisição
+                $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">Erro ao processar a solicitação. Tente novamente.</div>');
+            }
+        });
+    });
+});
+
+
+    </script>
 
 </body>
 

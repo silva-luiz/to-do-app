@@ -2,7 +2,7 @@
 
 function gerarJWT($id, $username) {
     $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
-    $payload = json_encode(['id' => $id, 'username' => $username, 'exp' => time() + 3600]); // 1 hora de validade
+    $payload = json_encode(['id' => $id, 'username' => $username, 'exp' => time() + 3600]); // Validade 1h
 
     $headerBase64 = base64_encode($header);
     $payloadBase64 = base64_encode($payload);
@@ -27,7 +27,7 @@ function validarJWT($token) {
 ', true);
     $validacaoBase64 = base64_encode($validacao);
 
-    return $validacaoBase64 === $assinatura; // Retorna verdadeiro se a assinatura é válida
+    return $validacaoBase64 === $assinatura;
 }
 
 function decodificarJWT($token) {

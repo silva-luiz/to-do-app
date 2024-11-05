@@ -12,7 +12,6 @@
     <h2 class="mb-4">Editar Tarefa</h2>
 
     <?php
-    // Verificar se 'id', 'title' e 'description' estão definidos no $_POST
     $id = isset($_POST['id']) ? trim($_POST['id']) : null;
     $title = isset($_POST['title']) ? trim($_POST['title']) : '';
     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
@@ -22,10 +21,8 @@
         return;
     }
 
-    // Incluindo o arquivo de conexão no banco de dados
     require_once("database.php");
 
-    // Definindo a query
     $SQL = "UPDATE activity SET title = :title, description = :description WHERE id = :id";
 
     $statement = $conexao->prepare($SQL);
@@ -39,7 +36,6 @@
         echo "<div class='alert alert-danger'>Falha ao editar a tarefa!</div>";
     }
 
-    // Fechando a conexão com o banco de dados
     unset($conexao);
     ?>
 

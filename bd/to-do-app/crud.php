@@ -10,7 +10,7 @@
     <p>O objetivo dessa tela é o de demonstrar em como inserir, alterar e excluir um registro</p>
 
     <?php
-    //Incluindo o arquivo de conexão no banco de dados
+
     require_once("database.php");
 
     function insereRegistro($conexao, $id, $title, $description, $status, $endDate)

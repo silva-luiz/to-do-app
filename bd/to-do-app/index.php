@@ -6,6 +6,7 @@
     <title>TO-DO APP</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
 <body class="container mt-5">
@@ -67,16 +68,13 @@
         exit();
     }
 
-    // Definindo a query com parâmetro preparado
     $SQL = "SELECT * FROM activity WHERE user_id = :user_id";
     $stmt = $conexao->prepare($SQL);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Guardando o resultado da busca
     $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-    // Capturando a quantidade de registros
     $quantidade = count($resultado);
 
     if ($quantidade == 0) {
@@ -100,26 +98,29 @@
     echo "    </thead>";
     echo "    <tbody>";
 
-    // Percorrendo todos os registros
     foreach ($resultado as $linha) {
-        // Verifica se a tarefa está concluída
-        $classe = ($linha->status == 1) ? "table-success" : "";
 
-        // Verifica se a data de conclusão foi ultrapassada e a tarefa não está concluída
-        $dataAtual = date('Y-m-d');
-        $endDateFormatada = date('Y-m-d', strtotime($linha->endDate));
-        if ($linha->status == 0 && $endDateFormatada < $dataAtual) {
-            $classe = "table-danger";
+        $classe = "";
+
+        if ($linha->status == 1) {
+            $classe = "table-success";
+        } else {
+            $dataAtual = date('Y-m-d'); 
+            $endDateFormatada = date('Y-m-d', strtotime($linha->endDate)); 
+    
+            if ($endDateFormatada < $dataAtual) {
+                $classe = "table-danger"; 
+            }
         }
-
-        echo "<tr class='$classe'>";
+    
+        echo "<tr class='$classe'>"; 
         echo "<td>" . $linha->id . "</td>";
         echo "<td>" . $linha->title . "</td>";
         echo "<td>" . $linha->description . "</td>";
         echo "<td>" . date('d-m-Y', strtotime($linha->endDate)) . "</td>";
-        echo "<td> <a href='alterar_formulario.php?id=" . $linha->id . "' class='btn btn-warning btn-sm'>Editar</a></td>";
-        echo "<td> <a href='remover_processamento.php?id=" . $linha->id . "' class='btn btn-danger btn-sm'>Remover</a></td>";
-        echo "<td> <a href='alterar_status.php?id=" . $linha->id . "' class='btn btn-success btn-sm'>Concluir</a></td>";
+        echo "<td> <a href='alterar_formulario.php?id=" . $linha->id . "' class='btn btn-warning btn-sm'><i class='bi bi-pencil'></i></a></td>";
+        echo "<td> <a href='remover_processamento.php?id=" . $linha->id . "' class='btn btn-danger btn-sm'><i class='bi bi-trash'></i></a></td>";
+        echo "<td> <a href='alterar_status.php?id=" . $linha->id . "' class='btn btn-success btn-sm'><i class='bi bi-check'></i></a></td>";
         echo "<td>" . ($linha->status == 1 ? "Concluída" : "Pendente") . "</td>";
         echo "</tr>";
     }
@@ -127,7 +128,6 @@
     echo "    </tbody>";
     echo "</table>";
 
-    // Fechando a conexão com o banco de dados
     unset($conexao);
     ?>
 
