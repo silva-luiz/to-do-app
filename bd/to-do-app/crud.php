@@ -43,30 +43,7 @@
         $statement->bindValue(':id', $id);
         return $statement->execute();
     }
-
-    // $retorno = insereRegistro($conexao, "Pepsi", "3 litros", "10", "9.52");
-    // if ($retorno) {
-    //     echo "Registro inserido com sucesso";
-    // } else {
-    //     echo "ERRO: O registro não foi inserido";
-    // }
     
-    // $retorno = atualizaRegistro($conexao, 7, "Sprite", "1 litro", "10", "1.99");
-    // if ($retorno) {
-    //     echo "Registro atualizado com sucesso";
-    // } else {
-    //     echo "ERRO: O registro não foi atualizado";
-    // }
-    
-    // $retorno = removeRegistro($conexao, 7);
-    // if ($retorno) {
-    //     echo "Registro removido com sucesso";
-    // } else {
-    //     echo "ERRO: O registro não foi removido";
-    // }
-    
-    //Fechando a conexão com o banco de dados
-    // $conexao = null;
     unset($conexao);
     ?>
 

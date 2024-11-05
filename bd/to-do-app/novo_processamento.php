@@ -6,10 +6,6 @@
 </head>
 
 <body>
-
-    <p>O objetivo desse exercício é o de demonstrar
-        como se conectar em um banco de dados e inserir um registro</p>
-
     <?php
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);

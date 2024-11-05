@@ -11,6 +11,9 @@
 <body class="container mt-5">
     <h1>To-Do App</h1>
     <p class="mb-4">Gerencie suas tarefas.</p>
+    <div class="text-end mb-3">
+        <a href="logout.php" class="btn btn-danger">Logout</a>
+    </div>
 
     <div class="modal fade" id="modalParticipantes" tabindex="-1" aria-labelledby="modalParticipantesLabel"
         aria-hidden="true">
@@ -43,6 +46,14 @@
 
     // Incluindo o arquivo de conexão no banco de dados
     require_once("database.php");
+    require_once("jwt.php");
+
+    if (isset($_COOKIE['jwt']) && validarJWT($_COOKIE['jwt'])) {
+        // TOKEN VALIDO
+    } else {
+        header("Location: login.php");
+        exit();
+    }
 
     // Definindo a query
     $SQL = "SELECT * FROM activity";
