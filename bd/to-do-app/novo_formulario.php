@@ -29,17 +29,17 @@
                     <div class="card-body">
                         <form id="taskForm">
                             <div class="form-group">
-                                <label for="title">Nome da Tarefa</label>
+                                <label for="title" class="font-weight-bold">Nome da Tarefa</label>
                                 <input type="text" class="form-control" id="title" name="title"
                                     placeholder="Digite o nome da tarefa" required>
                             </div>
                             <div class="form-group">
-                                <label for="description">Descrição</label>
+                                <label for="description" class="font-weight-bold">Descrição</label>
                                 <input type="text" class="form-control" id="description" name="description"
                                     placeholder="Digite a descrição" required>
                             </div>
                             <div class="form-group">
-                                <label for="enddate">Data de Conclusão</label>
+                                <label for="enddate" class="font-weight-bold">Data de Conclusão</label>
                                 <input type="date" class="form-control" id="enddate" name="enddate" required>
                             </div>
                             <button type="button" id="cadastrar" class="btn btn-success btn-block">Cadastrar</button>
