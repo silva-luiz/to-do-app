@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (isset($_COOKIE['jwt'])) {
+    setcookie('jwt', '', time() - 3600, "/"); // Remove o cookie definindo um tempo de expiração no passado
+}
+
 $erro = ""; // Inicializa a variável de erro
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -17,11 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Verifica se o usuário foi encontrado
     if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
         if (password_verify($password, $row['password'])) {
             // Gerar token JWT após login
             $token = gerarJWT($row['id'], $username);
             setcookie('jwt', $token, time() + 3600, "/"); // Define o cookie para 1 hora
             header("Location: index.php"); // Redireciona para a página principal após o login
+            
             exit();
         } else {
             $erro = "Nome de usuário ou senha incorretos.";

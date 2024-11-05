@@ -13,12 +13,21 @@
 
     
     if (($title == "") || ($description == "")) {
-        echo "Há registros em branco!";
+        echo json_encode(["resposta" => "Há registros em branco!"]);
         return;
     }
 
-    //Incluindo o arquivo de conexão no banco de dados
     require_once("database.php");
+    require_once("jwt.php");
+
+    if (isset($_COOKIE['jwt']) && validarJWT($_COOKIE['jwt'])) {
+        $token = $_COOKIE['jwt'];
+        $payload = decodificarJWT($token);
+        $user_id = $payload['id'];
+    } else {
+        header("Location: login.php");
+        exit();
+    }
 
     // Validando maior ID atual
     $query = "SELECT MAX(id) AS max_id FROM activity";
@@ -27,16 +36,15 @@
     $id = $row['max_id'] + 1;
 
     //Definindo a query
-    $SQL = "INSERT INTO activity " .
-        "(id, title, description, endDate)" .
-        " VALUES " .
-        "(:id, :title, :description, :endDate)";
+    $SQL = "INSERT INTO activity (id, title, description, endDate, user_id) 
+        VALUES (:id, :title, :description, :endDate, :user_id)";
 
     $statement = $conexao->prepare($SQL);
     $statement->bindParam(':id', $id);
     $statement->bindParam(':title', $title);
     $statement->bindParam(':description', $description);
     $statement->bindParam(':endDate', $endDate);
+    $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     
     if ($statement->execute()) {
         $status = "Registro inserido com sucesso";
@@ -44,7 +52,7 @@
         $status = "Falha ao inserir o registro";
     }
 
-    echo '{ "resposta": "$status" }';
+    echo json_encode(["resposta" => $status]);
 
     //Fechando a conexão com o banco de dados
     unset($conexao);

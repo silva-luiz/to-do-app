@@ -30,4 +30,17 @@ function validarJWT($token) {
     return $validacaoBase64 === $assinatura; // Retorna verdadeiro se a assinatura é válida
 }
 
+function decodificarJWT($token) {
+    $partes = explode('.', $token);
+    if (count($partes) !== 3) {
+        return null; // Token inválido
+    }
+    
+    $payloadBase64 = $partes[1];
+    $payloadJson = base64_decode($payloadBase64);
+    $payload = json_decode($payloadJson, true);
+    
+    return $payload;
+}
+
 ?>

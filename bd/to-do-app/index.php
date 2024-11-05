@@ -9,8 +9,22 @@
 </head>
 
 <body class="container mt-5">
+    <?php
+        require_once("database.php");
+        require_once("jwt.php");
+    if (isset($_COOKIE['jwt']) && validarJWT($_COOKIE['jwt'])) {
+        $token = $_COOKIE['jwt'];
+        $payload = decodificarJWT($token);
+        $user_id = $payload['id'];
+        $username = $payload['username'];
+    } else {
+        header("Location: login.php");
+        exit();
+    }
+    ?>
+
     <h1>To-Do App</h1>
-    <p class="mb-4">Gerencie suas tarefas.</p>
+    <p class="mb-4">Olá, <?php echo htmlspecialchars($username); ?>! Gerencie suas tarefas.</p>
     <div class="text-end mb-3">
         <a href="logout.php" class="btn btn-danger">Logout</a>
     </div>
@@ -43,26 +57,27 @@
 
 
     <?php
-
-    // Incluindo o arquivo de conexão no banco de dados
-    require_once("database.php");
-    require_once("jwt.php");
-
     if (isset($_COOKIE['jwt']) && validarJWT($_COOKIE['jwt'])) {
-        // TOKEN VALIDO
+        $token = $_COOKIE['jwt'];
+        $payload = decodificarJWT($token);
+        $user_id = $payload['id'];
+        $username = $payload['username'];
     } else {
         header("Location: login.php");
         exit();
     }
 
-    // Definindo a query
-    $SQL = "SELECT * FROM activity";
+    // Definindo a query com parâmetro preparado
+    $SQL = "SELECT * FROM activity WHERE user_id = :user_id";
+    $stmt = $conexao->prepare($SQL);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
 
-    // Guardando a busca no array $resultado
-    $resultado = $conexao->query($SQL);
+    // Guardando o resultado da busca
+    $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
 
     // Capturando a quantidade de registros
-    $quantidade = $resultado->rowCount();
+    $quantidade = count($resultado);
 
     if ($quantidade == 0) {
         echo "<div class='alert alert-warning'>Não há registros a serem exibidos</div>";
@@ -71,22 +86,22 @@
     }
 
     echo "<table class='table table-striped table-hover'>";
-    echo "	<thead class='thead-dark'>";
-    echo "		<tr>";
-    echo "			<th>ID</th>";
-    echo "			<th>Nome da Tarefa</th>";
-    echo "			<th>Descrição</th>";
-    echo "			<th>Data de Conclusão</th>";
-    echo "			<th>Alterar</th>";
-    echo "			<th>Remover</th>";
-    echo "			<th>Concluir</th>";
-    echo "			<th>Status</th>";
-    echo "		</tr>";
-    echo "	</thead>";
-    echo "	<tbody>";
+    echo "    <thead class='thead-dark'>";
+    echo "        <tr>";
+    echo "            <th>ID</th>";
+    echo "            <th>Nome da Tarefa</th>";
+    echo "            <th>Descrição</th>";
+    echo "            <th>Data de Conclusão</th>";
+    echo "            <th>Alterar</th>";
+    echo "            <th>Remover</th>";
+    echo "            <th>Concluir</th>";
+    echo "            <th>Status</th>";
+    echo "        </tr>";
+    echo "    </thead>";
+    echo "    <tbody>";
 
     // Percorrendo todos os registros
-    while ($linha = $resultado->fetch(PDO::FETCH_OBJ)) {
+    foreach ($resultado as $linha) {
         // Verifica se a tarefa está concluída
         $classe = ($linha->status == 1) ? "table-success" : "";
 
@@ -105,13 +120,12 @@
         echo "<td> <a href='alterar_formulario.php?id=" . $linha->id . "' class='btn btn-warning btn-sm'>Editar</a></td>";
         echo "<td> <a href='remover_processamento.php?id=" . $linha->id . "' class='btn btn-danger btn-sm'>Remover</a></td>";
         echo "<td> <a href='alterar_status.php?id=" . $linha->id . "' class='btn btn-success btn-sm'>Concluir</a></td>";
-        echo "<td>" . ($linha->status == 1 ? "Concluída" : "Pendente") . "</td>"; // Exemplo de status
+        echo "<td>" . ($linha->status == 1 ? "Concluída" : "Pendente") . "</td>";
         echo "</tr>";
     }
 
-    echo "	</tbody>";
+    echo "    </tbody>";
     echo "</table>";
-
 
     // Fechando a conexão com o banco de dados
     unset($conexao);
