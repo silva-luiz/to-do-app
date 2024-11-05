@@ -15,12 +15,6 @@
     $description = trim($_POST['description']);
     $endDate = trim($_POST['endDate']);
 
-
-    // Dados mockados
-    // $descricao = "Sukita";
-    // $modelo = "3 litros";
-    // $quantidade = "999";
-    // $valor = "0.99";
     
     if (($title == "") || ($description == "")) {
         echo "Há registros em branco!";
@@ -30,16 +24,24 @@
     //Incluindo o arquivo de conexão no banco de dados
     require_once("database.php");
 
+    // Validando maior ID atual
+    $query = "SELECT MAX(id) AS max_id FROM activity";
+    $result = $conexao->query($query);
+    $row = $result->fetch(PDO::FETCH_ASSOC);
+    $id = $row['max_id'] + 1;
+
     //Definindo a query
     $SQL = "INSERT INTO activity " .
-        "(title, description, endDate)" .
+        "(id, title, description, endDate)" .
         " VALUES " .
-        "(:title, :description, :endDate)";
+        "(:id, :title, :description, :endDate)";
 
     $statement = $conexao->prepare($SQL);
+    $statement->bindParam(':id', $id);
     $statement->bindParam(':title', $title);
     $statement->bindParam(':description', $description);
     $statement->bindParam(':endDate', $endDate);
+    
     if ($statement->execute()) {
         $status = "Registro inserido com sucesso";
     } else {
