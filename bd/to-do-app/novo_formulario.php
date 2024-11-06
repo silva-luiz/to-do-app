@@ -85,6 +85,7 @@
                     $("#mensagem").fadeOut();
                     window.location.href = "index.php";
                 }, 2000);
+                
             });
         });
     </script>

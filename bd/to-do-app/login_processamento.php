@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $SQL = "SELECT id, password FROM user WHERE username = :username";
+    $SQL = "SELECT id, password, name FROM user WHERE username = :username";
     $stmt = $conexao->prepare($SQL);
     $stmt->bindParam(':username', $username);
     $stmt->execute();
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (password_verify($password, $row['password'])) {
             
-            $token = gerarJWT($row['id'], $username);
+            $token = gerarJWT($row['id'], $username, $row['name']);
             setcookie('jwt', $token, time() + 3600, "/"); 
             echo json_encode(['success' => true, 'message' => 'Login realizado com sucesso!']);
             exit();

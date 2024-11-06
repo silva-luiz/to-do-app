@@ -32,9 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':password', $hashedPassword);
 
     if ($stmt->execute()) {
-        $token = gerarJWT($id, $username);
-        setcookie('jwt', $token, time() + 3600, "/");
-
         echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar o usuário.']);

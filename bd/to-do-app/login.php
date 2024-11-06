@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once("database.php"); 
     require_once("jwt.php");
 
-    $SQL = "SELECT id, password FROM user WHERE username = :username";
+    $SQL = "SELECT id, password, name FROM user WHERE username = :username";
     $stmt = $conexao->prepare($SQL);
     $stmt->bindParam(':username', $username);
     $stmt->execute();
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (password_verify($password, $row['password'])) {
             // Gerar token 
-            $token = gerarJWT($row['id'], $username);
+            $token = gerarJWT($row['id'], $username, $row['name']);
             setcookie('jwt', $token, time() + 3600, "/");
             header("Location: index.php"); 
             

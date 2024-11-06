@@ -1,8 +1,8 @@
 <?php
 
-function gerarJWT($id, $username) {
+function gerarJWT($id, $username, $name) {
     $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
-    $payload = json_encode(['id' => $id, 'username' => $username, 'exp' => time() + 3600]); // Validade 1h
+    $payload = json_encode(['id' => $id, 'username' => $username, 'name' => $name, 'exp' => time() + 3600]); // Validade 1h
 
     $headerBase64 = base64_encode($header);
     $payloadBase64 = base64_encode($payload);

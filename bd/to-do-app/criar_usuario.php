@@ -71,11 +71,13 @@
                         $("#create-user-form")[0].reset();
 
                         setTimeout(function() {
-                            $('#status-message').fadeOut('slow', function() {
-                                $(this).html('').show();
-                            });
-                        }, 3000);
-                    } else {
+                            $('#status-message').html('<div class="alert alert-success mt-3">' + response.message + '</div>');
+                            setTimeout(function() {
+                                window.location.href = 'index.php';
+                            }, 1000);
+                        }
+                    }
+                    else {
 
                         $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">' + response.message + '</div>');
                     }

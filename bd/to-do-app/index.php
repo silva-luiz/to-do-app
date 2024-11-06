@@ -18,6 +18,7 @@
         $payload = decodificarJWT($token);
         $user_id = $payload['id'];
         $username = $payload['username'];
+        $name = $payload['name'];
     } else {
         header("Location: login.php");
         exit();
@@ -25,7 +26,7 @@
     ?>
 
     <h1>To-Do App</h1>
-    <p class="mb-4">Olá, <?php echo htmlspecialchars($username); ?>! Gerencie suas tarefas.</p>
+    <p class="mb-4">Olá, <?php echo htmlspecialchars($name); ?>! Gerencie suas tarefas.</p>
     <div class="text-end mb-3">
         <a href="logout.php" class="btn btn-danger">Logout</a>
     </div>
