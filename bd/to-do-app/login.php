@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if (isset($_COOKIE['jwt'])) {
     setcookie('jwt', '', time() - 3600, "/");
@@ -45,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="bg-light">
     <div class="container mt-5">
@@ -56,12 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <h4>Login</h4>
                     </div>
                     <div class="card-body">
-                        <?php if ($erro): ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?= htmlspecialchars($erro) ?>
-                            </div>
-                        <?php endif; ?>
-                        <form id="loginForm" method="POST" action="">
+                        <div id="status-message"></div>
+                        <form id="loginForm">
                             <div class="form-group">
                                 <label for="username" class="form-label font-weight-bold">Usuário</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário" required>
@@ -78,5 +73,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#loginForm").submit(function(e) {
+                e.preventDefault()
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: 'login_processamento.php',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json', 
+                    success: function(response) {
+                        if (response.success) {
+                            $('#status-message').html('<div class="alert alert-success mt-3">' + response.message + '</div>');
+                            setTimeout(function() {
+                                window.location.href = 'index.php';
+                            }, 1000);
+                        } else {
+                            $('#status-message').html('<div class="alert alert-danger mt-3">' + response.message + '</div>');
+                        }
+                    },
+                    error: function() {
+                        $('#status-message').html('<div class="alert alert-danger mt-3">Erro ao processar a solicitação. Tente novamente.</div>');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
+

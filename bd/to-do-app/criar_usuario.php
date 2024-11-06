@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
     <title>TO-DO APP - Criar Usuário</title>
     <meta charset="utf-8">
@@ -23,8 +22,7 @@
 
                         <div id="status-message"></div>
 
-
-                        <form method="POST" action="novo_usuario_processamento.php">
+                        <form id="create-user-form" method="POST" action="novo_usuario_processamento.php">
                             <div class="form-group">
                                 <label for="name" class="form-label font-weight-bold">Nome</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Digite seu nome" required>
@@ -49,9 +47,6 @@
                             <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='login.php'">Voltar</button>
                         </form>
 
-                        <!-- Mensagem de status movida para baixo -->
-
-
                     </div>
                 </div>
             </div>
@@ -59,42 +54,39 @@
     </div>
 
     <script>
-$(document).ready(function() {
-    // Quando o formulário for enviado
-    $("#create-user-form").submit(function(e) {
-        e.preventDefault();  // Impede o envio padrão do formulário
+    $(document).ready(function() {
+        $("#create-user-form").submit(function(e) {
+            e.preventDefault();
 
-        // Coletando os dados do formulário
-        var formData = $(this).serialize();
+            var formData = $(this).serialize();
 
-        // Requisição AJAX
-        $.ajax({
-            url: 'novo_usuario_processamento.php',  // Arquivo PHP que processará o cadastro
-            type: 'POST',  // Método POST
-            data: formData,  // Dados do formulário
-            dataType: 'json',  // Esperamos uma resposta JSON
-            success: function(response) {
-                // Exibe a mensagem de sucesso com o status 'success'
-                if (response.success) {
-                    $('#status-message').html('<div class="alert alert-success mt-3" role="alert">' + response.message + '</div>');
-                    // Limpa o formulário
-                    $("#create-user-form")[0].reset();
-                } else {
-                    // Exibe a mensagem de erro
-                    $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">' + response.message + '</div>');
+            $.ajax({
+                url: 'novo_usuario_processamento.php',
+                type: 'POST', 
+                data: formData,  
+                dataType: 'json',  
+                success: function(response) {
+                    if (response.success) {
+                        $('#status-message').html('<div class="alert alert-success mt-3" role="alert">' + response.message + '</div>');
+                        $("#create-user-form")[0].reset();
+
+                        setTimeout(function() {
+                            $('#status-message').fadeOut('slow', function() {
+                                $(this).html('').show();
+                            });
+                        }, 3000);
+                    } else {
+
+                        $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">' + response.message + '</div>');
+                    }
+                },
+                error: function() {
+                    $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">Erro ao processar a solicitação. Tente novamente.</div>');
                 }
-            },
-            error: function() {
-                // Se houver erro na requisição
-                $('#status-message').html('<div class="alert alert-danger mt-3" role="alert">Erro ao processar a solicitação. Tente novamente.</div>');
-            }
+            });
         });
     });
-});
-
-
     </script>
 
 </body>
-
 </html>

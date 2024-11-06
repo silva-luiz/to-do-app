@@ -1,13 +1,12 @@
 <?php
+header('Content-Type: application/json');
 
-session_start();
+require_once("database.php"); 
+require_once("jwt.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
-
-    require_once("database.php"); 
-    require_once("jwt.php");
 
     $SQL = "SELECT id, password FROM user WHERE username = :username";
     $stmt = $conexao->prepare($SQL);
@@ -19,16 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (password_verify($password, $row['password'])) {
             
             $token = gerarJWT($row['id'], $username);
-            
-
             setcookie('jwt', $token, time() + 3600, "/"); 
-            header("Location: index.php"); 
+            echo json_encode(['success' => true, 'message' => 'Login realizado com sucesso!']);
             exit();
         } else {
-            $erro = "Nome de usuário ou senha incorretos.";
+            echo json_encode(['success' => false, 'message' => 'Nome de usuário ou senha incorretos.']);
+            exit();
         }
     } else {
-        $erro = "Nome de usuário ou senha inválidos.";
+        echo json_encode(['success' => false, 'message' => 'Nome de usuário ou senha inválidos.']);
+        exit();
     }
 }
 

@@ -35,7 +35,6 @@
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $id = $row['max_id'] + 1;
 
-    //Definindo a query
     $SQL = "INSERT INTO activity (id, title, description, endDate, user_id) 
         VALUES (:id, :title, :description, :endDate, :user_id)";
 
@@ -54,7 +53,6 @@
 
     echo json_encode(["resposta" => $status]);
 
-    //Fechando a conexão com o banco de dados
     unset($conexao);
     ?>
 

@@ -58,16 +58,7 @@
 
 
     <?php
-    if (isset($_COOKIE['jwt']) && validarJWT($_COOKIE['jwt'])) {
-        $token = $_COOKIE['jwt'];
-        $payload = decodificarJWT($token);
-        $user_id = $payload['id'];
-        $username = $payload['username'];
-    } else {
-        header("Location: login.php");
-        exit();
-    }
-
+    
     $SQL = "SELECT * FROM activity WHERE user_id = :user_id";
     $stmt = $conexao->prepare($SQL);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);

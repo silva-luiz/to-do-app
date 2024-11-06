@@ -20,10 +20,8 @@
         return;
     }
 
-    // Incluindo o arquivo de conexão no banco de dados
     require_once("database.php");
 
-    // Definindo a query
     $SQL = "DELETE FROM activity WHERE id = :id";
 
     $statement = $conexao->prepare($SQL);
@@ -35,7 +33,6 @@
         echo "<div class='alert alert-danger'>Falha ao remover o registro!</div>";
     }
 
-    // Fechando a conexão com o banco de dados
     unset($conexao);
     ?>
 

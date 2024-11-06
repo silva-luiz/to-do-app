@@ -62,12 +62,10 @@
             var _status = false;
 
             var dataMinima = new Date('2000-01-01');
-            var dataMaxima = new Date();
-
             var dataSelecionada = new Date(_endDate);
 
-            if (dataSelecionada < dataMinima || dataSelecionada > dataMaxima) {
-                alert('A data deve estar entre 01/01/2000 e a data atual.');
+            if (dataSelecionada < dataMinima) {
+                alert('A data deve ser superior a 01/01/2000');
                 return;
             }
 

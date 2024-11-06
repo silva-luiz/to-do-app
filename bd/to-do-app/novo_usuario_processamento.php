@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name']);
@@ -38,8 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar o usuário.']);
     }
-
-    header("Location: criar_usuario.php"); 
     exit();
 
 }
